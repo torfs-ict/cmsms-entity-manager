@@ -1,0 +1,125 @@
+/* Text input width */
+input.entity {
+    min-width: 30%;
+}
+
+/* Datepicker */
+input.entity.date-alt {
+    display: none;
+}
+
+/* Images */
+.entity-images .container {
+    display: inline-block;
+}
+.dropzone {
+    background: transparent;
+    border: 1px solid #dcd9d9;
+    padding: 2px;
+    display: inline-block;
+    min-height: 0;
+}
+.dropzone .dz-message {
+    margin: 0;
+    position: relative;
+}
+.dropzone .dz-message p {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+    margin: 0;
+    padding: 0;
+}
+.dropzone .dz-message img {
+    max-width: 100%;
+}
+.dropzone.dz-started .dz-message {
+    display: block;
+}
+.dropzone .dz-preview {
+    display: none;
+}
+.dropzone .dz-progress {
+    display: none;
+}
+
+/* Cropper */
+.entity-cropper .dropzone,
+.entity-files .dropzone {
+    display: block;
+    padding: 20px;
+    margin-bottom: 10px;
+    border: 2px dashed #dcd9d9;
+}
+.entity-files .dropzone {
+    display: inline-block;
+}
+.entity-cropper .dz-message p,
+.entity-files .dz-message p {
+    position: static;
+    transform: none;
+    color: #dcd9d9;
+    text-shadow: none;
+    width: 100%;
+}
+.entity-cropper .dropzone:hover,
+.entity-cropper .dropzone.dz-drag-hover,
+.entity-cropper .dropzone.dz-started,
+.entity-cropper .dropzone:hover .dz-message p,
+.entity-cropper .dropzone.dz-drag-hover .dz-message p
+.entity-cropper .dropzone.dz-started .dz-message p,
+.entity-files .dropzone:hover,
+.entity-files .dropzone.dz-drag-hover,
+.entity-files .dropzone.dz-started,
+.entity-files .dropzone:hover .dz-message p,
+.entity-files .dropzone.dz-started .dz-message p,
+.entity-files .dropzone.dz-drag-hover .dz-message p {
+    border-color: #585858;
+    color: #585858 !important;
+}
+.cropper-spinner {
+    width: 100% !important;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    display: none;
+}
+
+/* Pop-up cropper */
+.entity-images p.croplink {
+    text-align: center;
+}
+.entity-images p.croplink button {
+    cursor: pointer !important;
+}
+.entity-images .entity-property-cropper {
+    display: none;
+}
+.entity-property-cropper.ui-dialog-content {
+    padding: 0;
+    overflow: visible;
+}
+
+/* Files */
+.entity-files .dz-message {
+    cursor: pointer;
+}
+.dz-download {
+    margin-top: 10px;
+    text-transform: lowercase;
+    text-align: center;
+}
+.dz-download a {
+    color: rgba(20, 135, 219, 0.3);
+}
+.entity-files .dropzone:hover .dz-download a,
+.entity-files .dropzone.dz-drag-hover .dz-download a,
+.entity-files .dropzone.dz-started .dz-download a {
+    color: rgba(20, 135, 219, 1);
+}
