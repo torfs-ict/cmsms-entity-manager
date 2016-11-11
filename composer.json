@@ -1,7 +1,7 @@
 {
     "name": "torfs-ict/cmsms-entity-manager",
     "description": "Entity Manager module for CMS Made Simple",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +11,7 @@
     ],
     "require": {
         "torfs-ict/cmsms": "^2.1",
-        "torfs-ict/cmsms-netdesign": "dev-master",
+        "torfs-ict/cmsms-netdesign": "^1.0",
         "phpdocumentor/reflection-docblock": "^2.0"
     },
     "autoload": {
