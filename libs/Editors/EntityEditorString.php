@@ -38,6 +38,26 @@ class EntityEditorString extends EntityEditor {
         header('Content-Type: text/plain');
         /** @var Entity $entity */
         $entity = ContentOperations::get_instance()->LoadContentFromId($params['entity']);
+        $exif = exif_read_data($_FILES['file']['tmp_name']);
+        $orientation = null;
+        if (array_key_exists('COMPUTED', $exif) && array_key_exists('Orientation', $exif['COMPUTED'])) {
+            $orientation = $exif['COMPUTED']['Orientation'];
+        } elseif (array_key_exists('Orientation', $exif)) {
+            $orientation = $exif['Orientation'];
+        }
+        if (!is_null($orientation)) {
+            $im = imagecreatefromstring(file_get_contents($_FILES['file']['tmp_name']));
+            switch($orientation) {
+                case 2: $im = imageflip($im, IMG_FLIP_HORIZONTAL); break;
+                case 3: $im = imageflip($im, IMG_FLIP_VERTICAL); break;
+                case 4: $im = imageflip($im, IMG_FLIP_BOTH); break;
+                case 5: $im = imagerotate($im, -90, 0); $im = imageflip($im, IMG_FLIP_HORIZONTAL); break;
+                case 6: $im = imagerotate($im, -90, 0); break;
+                case 7: $im = imagerotate($im, 90, 0); $im = imageflip($im, IMG_FLIP_HORIZONTAL); break;
+                case 8: $im = imagerotate($im, 90, 0); break;
+            }
+            imagejpeg($im, $_FILES['file']['tmp_name']);
+        }
         $entity->UploadImage($params['property'], $params['index'], $_FILES['file']['name'], $_FILES['file']['tmp_name']);
         echo cms_join_path(cmsms()->GetConfig()->offsetGet('uploads_url'), '.entities', $entity->Id(), $params['property'], (int)$params['index'], 'original', $_FILES['file']['name']);
     }
