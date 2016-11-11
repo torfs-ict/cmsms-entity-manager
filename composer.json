@@ -11,7 +11,7 @@
     ],
     "require": {
         "torfs-ict/cmsms": "^2.1",
-        "torfs-ict/cmsms-netdesign": "dev-master",
+        "torfs-ict/cmsms-netdesign": "^1.0",
         "phpdocumentor/reflection-docblock": "^2.0"
     },
     "autoload": {
