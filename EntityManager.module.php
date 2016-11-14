@@ -37,7 +37,7 @@ class EntityManager extends NetDesignModule {
      * @return string
      */
     public function GetVersion() {
-        return '1.0.2';
+        return '1.0.3';
     }
 
     /**
