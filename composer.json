@@ -1,7 +1,7 @@
 {
     "name": "torfs-ict/cmsms-entity-manager",
     "description": "Entity Manager module for CMS Made Simple",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "license": "MIT",
     "authors": [
         {
