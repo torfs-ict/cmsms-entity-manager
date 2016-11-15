@@ -2,6 +2,12 @@
 
 namespace EntityManager;
 
+use ContentOperations;
+use EntityManager;
+use PDO;
+use ReflectionClass;
+use ReflectionProperty;
+
 /**
  * Class used to perform SELECT queries on entities.
  */
