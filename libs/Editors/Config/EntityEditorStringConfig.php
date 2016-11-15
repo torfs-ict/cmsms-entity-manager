@@ -21,11 +21,17 @@ class EntityEditorStringConfig extends EntityEditorConfig {
     public $tags = false;
     /** @var bool */
     public $wysiwyg = false;
+    /** @var int|null */
+    public $maxThumbnailWidth = null;
+    /** @var int|null */
+    public $maxThumbnailHeight = null;
 
     public function cast() {
         if (!is_null($this->default)) $this->default = (string)$this->default;
         if (!is_null($this->files)) $this->files = (int)$this->files;
         if (!is_null($this->images)) $this->images = (int)$this->images;
+        if (!is_null($this->maxThumbnailHeight)) $this->maxThumbnailHeight = (int)$this->maxThumbnailHeight;
+        if (!is_null($this->maxThumbnailWidth)) $this->maxThumbnailWidth = (int)$this->maxThumbnailWidth;
         $this->autocomplete = cms_to_bool($this->autocomplete);
         $this->required = cms_to_bool($this->required);
         $this->tags = cms_to_bool($this->tags);

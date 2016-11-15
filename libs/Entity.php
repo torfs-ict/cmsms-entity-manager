@@ -6,6 +6,8 @@ use CmsLayoutTemplate;
 use ContentBase;
 use ContentOperations;
 use EntityManager\Editors\Config\EntityEditorStringConfig;
+use Intervention\Image\Constraint;
+use Intervention\Image\ImageManagerStatic;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -388,7 +390,19 @@ abstract class Entity extends \CMSModuleContentType {
         #error_log(var_export($rect, true));
         $im = imagecreatefromstring(file_get_contents($src));
         $cropped = imagecrop($im, $rect);
-        imagejpeg($cropped, $dest, 100);
+        if (!is_null($config->maxThumbnailWidth) && $rect['width'] > $config->maxThumbnailWidth) {
+            $img = ImageManagerStatic::make($cropped);
+            $img->resize($config->maxThumbnailWidth, null, function(Constraint $constraint) {
+                $constraint->aspectRatio();
+            })->save($dest, 100);
+        } elseif (!is_null($config->maxThumbnailHeight) && $rect['height'] > $config->maxThumbnailHeight) {
+            $img = ImageManagerStatic::make($cropped);
+            $img->resize(null, $config->maxThumbnailHeight, function(Constraint $constraint) {
+                $constraint->aspectRatio();
+            })->save($dest, 100);
+        } else {
+            imagejpeg($cropped, $dest, 100);
+        }
     }
 
     public function CountImages($property) {
