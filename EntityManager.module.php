@@ -30,16 +30,6 @@ class EntityManager extends NetDesignModule {
         return parent::DoAction($name, $id, $params, $returnid);
     }
 
-
-    /**
-     * Returns the version of the module
-     *
-     * @return string
-     */
-    public function GetVersion() {
-        return '1.0.5';
-    }
-
     /**
      * @return string
      */
