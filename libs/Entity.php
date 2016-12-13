@@ -463,6 +463,21 @@ abstract class Entity extends \CMSModuleContentType {
         $this->OnAfterSave();
     }
 
+    /**
+     * @return ContentBase[]
+     */
+    final public function GetChildren() {
+        $ret = [];
+        /** @var cms_content_tree $hierarchy */
+        $hierarchy = cmsms()->GetHierarchyManager();
+        $me = $hierarchy->find_by_tag('id', $this->Id());
+        $children = $me->get_children();
+        foreach($children as $child) {
+            $ret[] = $child->getContent();
+        }
+        return $ret;
+    }
+
     public function OnBeforeSave() {}
     public function OnAfterSave() {}
     public static function CreateStaticRoutes() {}
