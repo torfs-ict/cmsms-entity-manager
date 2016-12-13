@@ -478,6 +478,14 @@ abstract class Entity extends \CMSModuleContentType {
         return $ret;
     }
 
+    public function Render() {
+        $module = \EntityManager::GetInstance();
+        $template = sprintf('%s.tpl', get_class($this));
+        $module->SmartyHeaders();
+        $module->smarty->assign('entity_obj', $this);
+        return $module->smarty->fetch($module->SmartyModuleResource($template));
+    }
+
     public function OnBeforeSave() {}
     public function OnAfterSave() {}
     public static function CreateStaticRoutes() {}
