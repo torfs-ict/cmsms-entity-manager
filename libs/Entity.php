@@ -443,15 +443,18 @@ abstract class Entity extends \CMSModuleContentType {
      * @param string $source
      */
     public function UploadFile($property, $index, $filename, $source) {
+        $this->Save();
         /** @var EntityEditorStringConfig $config */
         $config = $this->propertyConfig[$property];
         $files = unserialize($this->GetPropertyValue($property));
+        if (!is_array($files)) $files = [];
         $index = (int)$index;
-        if (count($files) < $config->files) $files = array_fill(0, $config->files, null);
+        if (count($files) < $config->files) $files = array_merge($files, array_fill(0, $config->files - count($files), null));
         $files[$index - 1] = $filename;
         $this->SetPropertyValue($property, serialize($files));
         $dest = cms_join_path(cmsms()->GetConfig()->offsetGet('uploads_path'), '.entities', $this->Id(), $property, $index, $filename);
         @mkdir(dirname($dest), 0755, true);
+        @unlink($dest);
         copy($source, $dest);
         $this->Save();
     }
@@ -482,8 +485,8 @@ abstract class Entity extends \CMSModuleContentType {
     public function Render() {
         $module = \EntityManager::GetInstance();
         $template = sprintf('%s.tpl', get_class($this));
-        $module->SmartyHeaders();
-        $module->smarty->assign('entity_obj', $this);
+        if (!headers_sent()) $module->SmartyHeaders();
+        $module->assign('entity_obj', $this);
         return $module->smarty->fetch($module->SmartyModuleResource($template));
     }
 
