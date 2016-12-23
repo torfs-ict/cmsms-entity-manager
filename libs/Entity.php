@@ -26,6 +26,25 @@ abstract class Entity extends \CMSModuleContentType {
     }
 
     /**
+     * @return static
+     */
+    public static function Factory($alias = null, $class = null) {
+        $ops = ContentOperations::get_instance();
+        $instance = $ops->CreateNewContent($class ?? get_called_class());
+        $instance->SetParentId(-1);
+        $instance->SetOwner(get_userid());
+        $instance->SetActive(true);
+        if (!is_null($alias)) $instance->SetAlias($alias);
+        return $instance;
+    }
+
+    public static function GetTemplateResourcePath($entity = null) {
+        $module = \EntityManager::GetInstance();
+        $template = sprintf('%s.tpl', $entity ?? get_called_class());
+        return $module->SmartyModuleResource($template);
+    }
+
+    /**
      * A method for returning the module that the content type belongs to.
      *
      * @return string
@@ -73,6 +92,18 @@ abstract class Entity extends \CMSModuleContentType {
      */
     public function IsViewable() {
         return false;
+    }
+
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return $this
+     */
+    public function Set($name, $value)
+    {
+        $this->SetPropertyValue($name, $value);
+        return $this;
     }
 
 
@@ -343,6 +374,15 @@ abstract class Entity extends \CMSModuleContentType {
         return $images[$index - 1];
     }
 
+    public function IsImageSet($property, $index = 1) {
+        /** @var EntityEditorStringConfig $cfg */
+        $cfg = $this->propertyConfig[$property];
+        $img = $this->GetImage($property, $index);
+        $src = cms_join_path(cmsms()->GetConfig()->offsetGet('uploads_path'), '.entities', $this->Id(), $property, $index, 'original', $img['filename']);
+        if (!is_file($src)) return false;
+        return true;
+    }
+
     public function CropImageAuto($property, $index) {
         /** @var EntityEditorStringConfig $cfg */
         $cfg = $this->propertyConfig[$property];
@@ -480,6 +520,16 @@ abstract class Entity extends \CMSModuleContentType {
             $ret[] = $child->getContent();
         }
         return $ret;
+    }
+
+    final public function GenerateAliasFromProperty($property) {
+        $this->SetAlias(munge_string_to_url($this->GetPropertyValue($property), true));
+        return $this;
+    }
+
+    final public function GenerateAliasFromString($string) {
+        $this->SetAlias(munge_string_to_url($string, true));
+        return $this;
     }
 
     public function Render() {
