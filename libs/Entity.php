@@ -425,7 +425,8 @@ abstract class Entity extends \CMSModuleContentType {
         $images = unserialize($this->GetPropertyValue($property));
         if (!is_array($images)) $images = [];
         $index = (int)$index;
-        if (count($images) < $config->images) $images = array_merge($images, array_fill(0, $config->images - count($images), ['filename' => '', 'x' => 0, 'y' => 0, 'width' => 0, 'height' => 0]));        $images[$index - 1] = ['filename' => $filename, 'x' => 0, 'y' => 0, 'width' => 0, 'height' => 0];
+        if (count($images) < $config->images) $images = array_merge($images, array_fill(0, $config->images - count($images), ['filename' => '', 'x' => 0, 'y' => 0, 'width' => 0, 'height' => 0]));        
+        $images[$index - 1] = ['filename' => $filename, 'x' => 0, 'y' => 0, 'width' => 0, 'height' => 0];
         $this->SetPropertyValue($property, serialize($images));
         $dest = cms_join_path(cmsms()->GetConfig()->offsetGet('uploads_path'), '.entities', $this->Id(), $property, $index, 'original', $filename);
         @mkdir(dirname($dest), 0755, true);
