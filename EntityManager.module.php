@@ -339,12 +339,9 @@ class EntityManager extends NetDesignModule {
     }
 
     public static function SmartyTemplatePlugin($params, Smarty_Internal_Template $template) {
+        /** @var Entity $entity */
         $entity = cms_utils::get_current_content();
-        $module = EntityManager::GetInstance();
-        $template = sprintf('%s.tpl', get_class($entity));
-        $module->SmartyHeaders();
-        $module->smarty->assign('entity', $entity);
-        return $module->smarty->fetch($module->SmartyModuleResource($template));
+        return $entity->Render();
     }
 
     public function CreateStaticRoutes() {
