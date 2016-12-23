@@ -357,8 +357,14 @@ abstract class Entity extends \CMSModuleContentType {
         if (count($files) < $config->files) $files = array_fill(0, $config->files, null);
         $ret = $files[$index - 1];
         if (empty($ret)) return null;
+        $size = (int)filesize(cms_join_path(cmsms()->GetConfig()->offsetGet('uploads_path'), '.entities', $this->Id(), $property, $index, $ret));
+        $humanSize = $size;
+        for($i = 0; ($humanSize / 1024) > 0.9; $i++, $humanSize /= 1024) {}
+        $humanSize = number_format($humanSize, 2, ',', ' ') . ' ' . ['B','kB','MB','GB','TB','PB','EB','ZB','YB'][$i];
         return [
             'filename' => $ret,
+            'size' => $size,
+            'sizeHuman' => $humanSize,
             'url' => cms_join_path(cmsms()->GetConfig()->offsetGet('uploads_url'), '.entities', $this->Id(), $property, $index, $ret)
         ];
     }
