@@ -10,7 +10,6 @@
         }
     ],
     "require": {
-        "torfs-ict/cmsms": "^2.1.5.1",
         "torfs-ict/cmsms-netdesign": "^2.0.0",
         "phpdocumentor/reflection-docblock": "^2.0",
         "ext-exif": "*",
