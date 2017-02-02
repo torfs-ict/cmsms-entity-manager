@@ -3,6 +3,7 @@
 use NetDesign\NetDesignModule;
 use EntityManager\Entity;
 use EntityManager\EntityImage;
+use Webmozart\Glob\Glob;
 
 class EntityManager extends NetDesignModule {
     private $entities = null;
@@ -180,14 +181,20 @@ class EntityManager extends NetDesignModule {
         if (!ModuleOperations::get_instance()->IsModuleActive($this->GetName())) return [];
         if (is_null($this->entities)) {
             $this->entities = array();
+            $base = cms_join_path($this->GetModulePath(), 'libs', 'Entities');
             // Built-in entities
-            $glob = glob(cms_join_path($this->GetModulePath(), 'libs', 'Entities', '*.php'));
+            $glob = Glob::glob(cms_join_path($this->GetModulePath(), 'libs', 'Entities', '**', '*.php'));
             foreach($glob as $filename) {
-                $entity = pathinfo($filename, PATHINFO_FILENAME);
-                require_once($filename);
+                $entity = sprintf('\\EntityManager\\Entities\\%s', str_replace('/', '\\', substr($filename, strlen($base) + 1)));
+                $entity = substr($entity, 0, strlen($entity) - 4);
+                $ref = new ReflectionClass($entity);
                 if (
-                    !is_a($entity, '\\EntityManager\\Entity', true)
-                    && !is_a($entity, '\\EntityManager\\EntityImage', true)
+                    (
+                        !is_a($entity, '\\EntityManager\\Entity', true)
+                        && !is_a($entity, '\\EntityManager\\EntityImage', true)
+                    ) || (
+                        $ref->isAbstract()
+                    )
                 ) continue;
                 /** @var Entity $ref */
                 $ref = new $entity();

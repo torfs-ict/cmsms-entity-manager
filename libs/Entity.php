@@ -30,7 +30,7 @@ abstract class Entity extends \CMSModuleContentType {
      */
     public static function Factory($alias = null, $class = null) {
         $ops = ContentOperations::get_instance();
-        $instance = $ops->CreateNewContent($class ?? get_called_class());
+        $instance = $ops->CreateNewContent(is_null($class) ? get_called_class() : $class);
         $instance->SetParentId(-1);
         $instance->SetOwner(get_userid());
         $instance->SetActive(true);
@@ -40,7 +40,7 @@ abstract class Entity extends \CMSModuleContentType {
 
     public static function GetTemplateResourcePath($entity = null) {
         $module = \EntityManager::GetInstance();
-        $template = sprintf('%s.tpl', $entity ?? get_called_class());
+        $template = sprintf('%s.tpl', is_null($entity) ? get_called_class() : $entity);
         return $module->SmartyModuleResource($template);
     }
 
@@ -434,21 +434,18 @@ abstract class Entity extends \CMSModuleContentType {
         @unlink($dest);
         #error_log(sprintf('Cropping %s, file exists: %s', $src, (file_exists($src) ? 'yes' : 'no')));
         #error_log(var_export($rect, true));
-        $im = imagecreatefromstring(file_get_contents($src));
-        $cropped = imagecrop($im, $rect);
+        $img = ImageManagerStatic::make($src);
+        $img->crop((int)$rect['width'], (int)$rect['height'], (int)$rect['x'], (int)$rect['y']);
         if (!is_null($config->maxThumbnailWidth) && $rect['width'] > $config->maxThumbnailWidth) {
-            $img = ImageManagerStatic::make($cropped);
             $img->resize($config->maxThumbnailWidth, null, function(Constraint $constraint) {
                 $constraint->aspectRatio();
-            })->save($dest, 100);
+            });
         } elseif (!is_null($config->maxThumbnailHeight) && $rect['height'] > $config->maxThumbnailHeight) {
-            $img = ImageManagerStatic::make($cropped);
             $img->resize(null, $config->maxThumbnailHeight, function(Constraint $constraint) {
                 $constraint->aspectRatio();
-            })->save($dest, 100);
-        } else {
-            imagejpeg($cropped, $dest, 100);
+            });
         }
+        $img->save($dest, 100);
     }
 
     public function CountImages($property) {
