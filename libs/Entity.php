@@ -30,7 +30,7 @@ abstract class Entity extends \CMSModuleContentType {
      */
     public static function Factory($alias = null, $class = null) {
         $ops = ContentOperations::get_instance();
-        $instance = $ops->CreateNewContent($class ?? get_called_class());
+        $instance = $ops->CreateNewContent(is_null($class) ? get_called_class() : $class);
         $instance->SetParentId(-1);
         $instance->SetOwner(get_userid());
         $instance->SetActive(true);
@@ -40,7 +40,7 @@ abstract class Entity extends \CMSModuleContentType {
 
     public static function GetTemplateResourcePath($entity = null) {
         $module = \EntityManager::GetInstance();
-        $template = sprintf('%s.tpl', $entity ?? get_called_class());
+        $template = sprintf('%s.tpl', is_null($entity) ? get_called_class() : $entity);
         return $module->SmartyModuleResource($template);
     }
 
