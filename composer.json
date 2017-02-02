@@ -14,7 +14,10 @@
         "torfs-ict/cmsms-netdesign": "^2.0.0",
         "phpdocumentor/reflection-docblock": "^2.0",
         "ext-exif": "*",
-        "intervention/image": "^2.3"
+		"ext-fileinfo": "*",
+		"ext-mbstring": "*",
+        "intervention/image": "^2.3",
+        "webmozart/glob": "^4.1"
     },
     "autoload": {
         "psr-4": { "EntityManager\\" : "libs/" }
