@@ -552,9 +552,6 @@ abstract class Entity extends \CMSModuleContentType {
     public function OnBeforeSave() {}
     public function OnAfterSave() {}
     public static function CreateStaticRoutes() {}
-    public static function IsBuiltIn() {
-        return false;
-    }
     public static function IsExtentedContent() {
         return false;
     }
