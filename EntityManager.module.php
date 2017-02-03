@@ -1,5 +1,6 @@
 <?php
 
+use EntityManager\BuiltInResource;
 use NetDesign\NetDesignModule;
 use EntityManager\Entity;
 use EntityManager\EntityImage;
@@ -52,6 +53,7 @@ class EntityManager extends NetDesignModule {
      */
     public function Initialize() {
         $this->GetEntities();
+        $this->smarty->registerResource('BuiltInEntity', new BuiltInResource());
     }
 
     /**
