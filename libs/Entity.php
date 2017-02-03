@@ -6,6 +6,7 @@ use CmsLayoutTemplate;
 use ContentBase;
 use ContentOperations;
 use EntityManager\Editors\Config\EntityEditorStringConfig;
+use EntityManager\Entities\BuiltIn;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManagerStatic;
 use ReflectionClass;
@@ -40,8 +41,14 @@ abstract class Entity extends \CMSModuleContentType {
 
     public static function GetTemplateResourcePath($entity = null) {
         $module = \EntityManager::GetInstance();
-        $template = sprintf('%s.tpl', is_null($entity) ? get_called_class() : $entity);
-        return $module->SmartyModuleResource($template);
+        $class = is_null($entity) ? get_called_class() : $entity;
+        if (is_subclass_of($class, BuiltIn::class)) {
+            $template = sprintf('BuiltInEntity:%s.tpl', str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 14)));
+            return $template;
+        } else {
+            $template = sprintf('%s.tpl', $class);
+            return $module->SmartyModuleResource($template);
+        }
     }
 
     /**
@@ -537,10 +544,9 @@ abstract class Entity extends \CMSModuleContentType {
 
     public function Render() {
         $module = \EntityManager::GetInstance();
-        $template = sprintf('%s.tpl', get_class($this));
         if (!headers_sent()) $module->SmartyHeaders();
         $module->assign('entity_obj', $this);
-        return $module->smarty->fetch($module->SmartyModuleResource($template));
+        return $module->smarty->fetch(static::GetTemplateResourcePath());
     }
 
     public function OnBeforeSave() {}

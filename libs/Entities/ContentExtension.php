@@ -8,9 +8,8 @@ use CmsFormUtils;
 use CmsLayoutCollection;
 use CmsLayoutTemplate;
 use CmsLayoutTemplateType;
-use EntityManager\Entity;
 
-class ContentExtension extends Entity {
+class ContentExtension extends BuiltIn {
     /**
      * @var string
      * @required true
