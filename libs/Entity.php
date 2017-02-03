@@ -6,6 +6,7 @@ use CmsLayoutTemplate;
 use ContentBase;
 use ContentOperations;
 use EntityManager\Editors\Config\EntityEditorStringConfig;
+use EntityManager\Entities\BuiltIn;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManagerStatic;
 use ReflectionClass;
@@ -546,6 +547,9 @@ abstract class Entity extends \CMSModuleContentType {
     public function OnBeforeSave() {}
     public function OnAfterSave() {}
     public static function CreateStaticRoutes() {}
+    public static function IsBuiltIn() {
+        return false;
+    }
     public static function IsExtentedContent() {
         return false;
     }
