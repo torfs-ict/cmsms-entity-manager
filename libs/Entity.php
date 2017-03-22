@@ -459,6 +459,7 @@ abstract class Entity extends \CMSModuleContentType {
         /** @var EntityEditorStringConfig $config */
         $config = $this->propertyConfig[$property];
         $images = unserialize($this->GetPropertyValue($property));
+        if ($config->images < count($images)) return $config->images;
         return count($images);
     }
 
