@@ -1,5 +1,6 @@
 <?php
 
+use EntityManager\BuiltInResource;
 use NetDesign\NetDesignModule;
 use EntityManager\Entity;
 use EntityManager\EntityImage;
@@ -52,6 +53,7 @@ class EntityManager extends NetDesignModule {
      */
     public function Initialize() {
         $this->GetEntities();
+        $this->smarty->registerResource('BuiltInEntity', new BuiltInResource());
     }
 
     /**
@@ -203,7 +205,7 @@ class EntityManager extends NetDesignModule {
                 $pc->filename = $filename;
                 $pc->friendlyname = $ref->FriendlyName();
                 $pc->loaded = false;
-                $pc->type = strtolower($entity);
+                $pc->type = $ref->Type();
                 ContentOperations::get_instance()->register_content_type($pc);
                 $this->entities[] = $entity;
             }
@@ -223,7 +225,7 @@ class EntityManager extends NetDesignModule {
                 $pc->filename = $filename;
                 $pc->friendlyname = $ref->FriendlyName();
                 $pc->loaded = false;
-                $pc->type = strtolower($entity);
+                $pc->type = $ref->Type();
                 ContentOperations::get_instance()->register_content_type($pc);
                 $this->entities[] = $entity;
             }
